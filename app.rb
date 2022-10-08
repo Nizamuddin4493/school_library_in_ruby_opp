@@ -155,7 +155,7 @@ class App
     @persons.each_with_index { |person, index| puts "#{index}) ID:#{person.id} Name: #{person.name} Age:#{person.age}" }
     person_index = gets.chomp.to_i
 
-    print 'Date: yyyy-mm-dd'
+    puts 'Date: yyyy-mm-dd'
     date = gets.chomp
 
     rental = Rental.new(date, @persons[person_index], @books[book_index])
