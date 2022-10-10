@@ -4,17 +4,28 @@ require_relative 'classroom'
 class Student < Person
   attr_reader :classroom
 
-  def initialize(age, name = 'unknown', parent_permission: true)
-    super(age, name, parent_permission: parent_permission)
+  def initialize(age, name, parent_permission: true)
+    super(age, name)
     @classroom = classroom
+    @parent_permission = parent_permission
   end
 
   def play_hooky
     "¯\(ツ)/¯"
   end
 
+  def can_use_services?
+    is_of_age? || @parent_permission
+  end
+
   def classroom=(classroom)
     @classroom = classroom
     classroom.students.push(self) unless classroom.students.include?(self)
+  end
+
+  private
+
+  def of_age?
+    @age >= 18
   end
 end

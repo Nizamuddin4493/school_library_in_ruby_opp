@@ -1,46 +1,21 @@
-require_relative 'person'
 require_relative 'student'
 require_relative 'teacher'
 require_relative 'book'
 require_relative 'rental'
+require_relative 'create_book'
+require_relative 'create_student'
+require_relative 'create_teacher'
 
 class App
-  attr_accessor :persons, :books, :rentals
+  attr_accessor :persons, :books, :rentals, :create_book
 
   def initialize
     @persons = []
     @books = []
     @rentals = []
-  end
-
-  def run
-    puts 'Welcome to OPP School Library App!'
-    loop do
-      main_menu
-
-      print 'Enter your option: '
-      input = gets.chomp
-
-      if input == '7'
-        puts 'Thanks for using the app'
-        break
-      end
-
-      options(input)
-    end
-  end
-
-  def main_menu
-    puts ''
-    puts '-------------------------------------------'
-    puts 'Please choose an option by enter a number: '
-    puts '1 - List all books'
-    puts '2 - List all people'
-    puts '3 - Create a person'
-    puts '4 - Create a book'
-    puts '5 - Create a rental'
-    puts '6 - List all rentals for a given person id'
-    puts '7 - Exit'
+    @create_book = CreateBook.new
+    @create_student = CreateStudent.new
+    @create_teacher = CreateTeacher.new
   end
 
   def options(input)
@@ -52,7 +27,8 @@ class App
     when '3'
       create_a_person
     when '4'
-      create_a_book
+      book = @create_book.new_book
+      @books << book
     when '5'
       create_a_rental
     when '6'
@@ -87,61 +63,14 @@ class App
 
     case input
     when '1'
-      create_a_student
+      student = @create_student.new_student
+      @persons << student
     when '2'
-      create_a_teacher
+      teacher = @create_teacher.new_teacher
+      @persons << teacher
     else
       puts 'Input not valid. Please enter a valid input (1) or (2)'
     end
-  end
-
-  def create_a_student
-    puts 'Creating a student ...'
-    print 'Age: '
-    age = gets.chomp.to_i
-
-    print 'Name: '
-    name = gets.chomp
-
-    print 'Has parent permission? [Y/N]: '
-    parent_permission = gets.chomp.upcase
-    parent_permission = parent_permission == 'Y'
-
-    student = Student.new(age, name, parent_permission: parent_permission)
-    persons.push(student)
-
-    puts "Student #{name} created successfully"
-  end
-
-  def create_a_teacher
-    puts 'Creating a teacher ...'
-    print 'Age: '
-    age = gets.chomp.to_i
-
-    print 'Name: '
-    name = gets.chomp
-
-    print 'Specialization: '
-    specialization = gets.chomp
-
-    teacher = Teacher.new(age, specialization, name)
-    persons.push(teacher)
-
-    puts "Teacher #{name} created successfully"
-  end
-
-  def create_a_book
-    puts 'Creating a book ... '
-    print 'Book Title: '
-    title = gets.chomp
-
-    print 'Book Author: '
-    author = gets.chomp
-
-    book = Book.new(title, author)
-    books.push(book)
-
-    puts "Book #{title} created successfully"
   end
 
   def create_a_rental
