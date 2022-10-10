@@ -6,7 +6,7 @@ class Main
   def initialize
     @app = App.new
   end
-  # app.run
+
   def run
     puts 'Welcome to OPP School Library App!'
     loop do
@@ -38,5 +38,5 @@ class Main
   end
 end
 
-runProg = Main.new
-runProg.run
+run_prog = Main.new
+run_prog.run

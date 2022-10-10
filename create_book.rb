@@ -10,7 +10,7 @@ class CreateBook
     author = gets.chomp
 
     book = Book.new(title, author)
-
     puts "Book #{title} created successfully"
+    book
   end
 end
