@@ -3,56 +3,59 @@ require_relative 'student'
 require_relative 'teacher'
 require_relative 'book'
 require_relative 'rental'
+require_relative 'create_book'
 
 class App
-  attr_accessor :persons, :books, :rentals
+  attr_accessor :persons, :books, :rentals, :create_book
 
   def initialize
     @persons = []
     @books = []
     @rentals = []
+    @create_book = CreateBook.new
   end
 
-  def run
-    puts 'Welcome to OPP School Library App!'
-    loop do
-      main_menu
+  # def run
+  #   puts 'Welcome to OPP School Library App!'
+  #   loop do
+  #     main_menu
 
-      print 'Enter your option: '
-      input = gets.chomp
+  #     print 'Enter your option: '
+  #     input =  InputReader.read_input # gets.chomp
 
-      if input == '7'
-        puts 'Thanks for using the app'
-        break
-      end
+  #     if input == '7'
+  #       puts 'Thanks for using the app'
+  #       break
+  #     end
 
-      options(input)
-    end
-  end
+  #     options(input)
+  #   end
+  # end
 
-  def main_menu
-    puts ''
-    puts '-------------------------------------------'
-    puts 'Please choose an option by enter a number: '
-    puts '1 - List all books'
-    puts '2 - List all people'
-    puts '3 - Create a person'
-    puts '4 - Create a book'
-    puts '5 - Create a rental'
-    puts '6 - List all rentals for a given person id'
-    puts '7 - Exit'
-  end
+  # def main_menu
+  #   puts ''
+  #   puts '-------------------------------------------'
+  #   puts 'Please choose an option by enter a number: '
+  #   puts '1 - List all books'
+  #   puts '2 - List all people'
+  #   puts '3 - Create a person'
+  #   puts '4 - Create a book'
+  #   puts '5 - Create a rental'
+  #   puts '6 - List all rentals for a given person id'
+  #   puts '7 - Exit'
+  # end
 
   def options(input)
     case input
     when '1'
-      list_all_books
+      list_all_books 
     when '2'
       list_all_people
     when '3'
       create_a_person
     when '4'
-      create_a_book
+      book = @create_book.new_book
+      @books.push(book)
     when '5'
       create_a_rental
     when '6'
@@ -130,19 +133,19 @@ class App
     puts "Teacher #{name} created successfully"
   end
 
-  def create_a_book
-    puts 'Creating a book ... '
-    print 'Book Title: '
-    title = gets.chomp
+  # def create_a_book
+  #   puts 'Creating a book ... '
+  #   print 'Book Title: '
+  #   title = gets.chomp
 
-    print 'Book Author: '
-    author = gets.chomp
+  #   print 'Book Author: '
+  #   author = gets.chomp
 
-    book = Book.new(title, author)
-    books.push(book)
+  #   book = Book.new(title, author)
+  #   books.push(book)
 
-    puts "Book #{title} created successfully"
-  end
+  #   puts "Book #{title} created successfully"
+  # end
 
   def create_a_rental
     puts 'Creating a rental ... '
