@@ -41,6 +41,12 @@ To get a local copy up and running follow these simple example steps.
 - Twitter: [@Nizamuddin4493](https://twitter.com/Nizamuddin4493)
 - LinkedIn: [nizamuddin4493](https://linkedin.com/in/nzm4493)
 
+👤 Aquinas Moriasi
+
+- GitHub: [Aquinas Moriasi](https://github.com/Aquinasmoriasi)
+- Twitter: [@Aquinas747](https://twitter.com/Aquinas747)
+- LinkedIn: [Aquinas Moriasi](https://twitter.com/aquinas-moriasi)
+
 ## 🤝 Contributing
 
 Contributions, issues, and feature requests are welcome!
