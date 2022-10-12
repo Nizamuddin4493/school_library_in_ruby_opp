@@ -6,7 +6,7 @@ require_relative 'create_book'
 require_relative 'create_student'
 require_relative 'create_teacher'
 require 'json'
-require 'pry'
+require 'json/add/ostruct'
 
 class App
   attr_accessor :persons, :books, :rentals, :create_book
@@ -34,7 +34,6 @@ class App
       @books << json
       File.write('books.json', @books)
     when '5'
-      # create_a_rental
       rental = create_a_rental
       json = JSON.generate(rental)
       @rentals << json
@@ -52,9 +51,9 @@ class App
       @books = JSON.parse(File.read(bookData))
     end
     if @books.empty?
-      puts 'Book list is empty'
+      puts "\nBook list is empty"
     else
-      puts 'List of all Books'
+      puts "\nList of all Books"
       @books.each do |book| 
         book = JSON.parse(book, create_additions: true)
         puts "Title: #{book.title} Author: #{book.author}" 
@@ -63,14 +62,14 @@ class App
   end
 
   def list_all_people
-    @persons = JSON.parse(File.read('persons.json')) if File.exists?('persons.json')
+    @persons = JSON.parse(File.read('persons.json'), create_additions: true) if File.exists?('persons.json')
     if @persons.empty?
-      puts 'Person list is empty'
+      puts "\nNo people added"
     else
-    puts 'List of all People'
+    puts "\nList of all people"
       @persons.each  do |person|
         person = JSON.parse(person, create_additions: true)
-        puts "[#{person.class}] ID: #{person.id} Name: #{person.name} Age: #{person.age}"
+        puts "[#{person.className}] ID: #{person.id} Name: #{person.name} Age: #{person.age}"
       end 
     end
   end
@@ -83,12 +82,14 @@ class App
     case input
     when '1'
       student = @create_student.new_student
-      json = JSON.generate(student)
+      s_struct = OpenStruct.new(name: student.name, id:student.id, className: student.class, parent_permission: student.parent_permission, age: student.age)
+      json = JSON.generate(s_struct)
       @persons << json
       File.write('persons.json', @persons)
     when '2'
       teacher = @create_teacher.new_teacher
-      json = JSON.generate(teacher)
+      t_struct = OpenStruct.new(name: teacher.name, id:teacher.id, className: teacher.class, specialization: teacher.specialization, age: teacher.age)
+      json = JSON.generate(t_struct)
       @persons << json
       File.write('persons.json', @persons)
     else
@@ -122,19 +123,29 @@ class App
     rental
   end
 
+  def list_all_rentals
+    rentalData = "rentals.json"
+    if File.exist?(rentalData) && File.read(rentalData) != ''
+      @rentals = JSON.parse(File.read(rentalData))
+    end
+    if @rentals.empty?
+      puts "\nNo current rentals"
+    else 
+      puts "\nCurrent rentals:"
+      @rentals.each do |rental|
+        rental = JSON.parse(rental, create_additions: true)
+        person = JSON.parse(rental.person, create_additions: true)
+        book = JSON.parse(rental.book, create_additions: true)
+        puts "Date: #{rental.date} - Book: #{book.title} - Author: #{book.author} borrowed by - [#{person.className}] ID: #{person.id} Name: #{person.name} Age: #{person.age} "
+      end
+    end
+  end
+
   def list_all_rentals_by_person_id
     puts 'List of all rentals by person id'
 
     puts 'Select a person from the following list by ID'
-    # list_all_people
-    puts 'List of all People'
-      person_data = File.open('persons.json', "r")
-      # @persons = JSON.parse(person_data)
-      person_data.each  do |person|
-        puts person[1]
-        # person = JSON.parse(person, create_additions: true)
-        # puts "[#{person.class}] ID: #{person.id} Name: #{person.name} Age: #{person.age}"
-      end 
+    list_all_people
     person_id = gets.chomp
 
     puts 'Rentals: '
@@ -142,18 +153,16 @@ class App
     if File.exist?(rentalData) && File.read(rentalData) != ''
       @rentals = JSON.parse(File.read(rentalData))
     end
-    
+      
     @rentals.each do |rental|
       rental = JSON.parse(rental, create_additions: true)
-      person = JSON.parse(person, create_additions: true)
-      # puts "#{person.class}] ID: #{person.id} Name: #{person.name} Age: #{person.age}"
-      p person.id
-      # p person_id
-      binding.pry
-      # if person.id.to_i == person_id.to_i
-      #   puts "Date: #{rental.date} - Book: #{rental.book.title} - Author: #{rental.book.author}"
-      # else puts "No rental is found"
-      # end
+      person = JSON.parse(rental.person, create_additions: true)
+      book = JSON.parse(rental.book, create_additions: true)
+      puts "[#{person.className}] ID: #{person.id} Name: #{person.name} Age: #{person.age}"
+      if person.id.to_i == person_id.to_i
+        puts "Date: #{rental.date} - Book: #{book.title} - Author: #{book.author}"
+      else puts "No rental is found"
+      end
     end
   end
 end
