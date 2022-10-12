@@ -7,7 +7,6 @@ require_relative 'create_student'
 require_relative 'create_teacher'
 require 'json'
 require 'pry'
-require 'json/add/ostruct'
 
 class App
   attr_accessor :persons, :books, :rentals, :create_book
@@ -35,7 +34,11 @@ class App
       @books << json
       File.write('books.json', @books)
     when '5'
-      create_a_rental
+      # create_a_rental
+      rental = create_a_rental
+      json = JSON.generate(rental)
+      @rentals << json
+      File.write('rentals.json', @rentals)
     when '6'
       list_all_rentals_by_person_id
     else
@@ -97,35 +100,60 @@ class App
     puts 'Creating a rental ... '
 
     puts 'Select a book from the following list by a number'
-    @books.each_with_index { |book, index| puts "#{index}) Title: #{book.title} Author: #{book.author}" }
+    @books.each_with_index do |book, index| 
+      book = JSON.parse(book, create_additions: true)
+      puts "#{index}) Title: #{book.title} Author: #{book.author}"
+    end
     book_index = gets.chomp.to_i
 
     puts 'Select a person from the following list by a number (not from id)'
-    @persons.each_with_index { |person, index| puts "#{index}) ID:#{person.id} Name: #{person.name} Age:#{person.age}" }
+    @persons.each_with_index  do |person, index|
+      person = JSON.parse(person, create_additions: true)
+      puts "#{index}) ID:#{person.id} Name: #{person.name} Age:#{person.age}"
+    end 
+    
     person_index = gets.chomp.to_i
 
     puts 'Date: yyyy-mm-dd'
     date = gets.chomp
 
     rental = Rental.new(date, @persons[person_index], @books[book_index])
-    @rentals.push(rental)
-
     puts 'Rental created successfully'
+    rental
   end
 
   def list_all_rentals_by_person_id
     puts 'List of all rentals by person id'
 
     puts 'Select a person from the following list by ID'
-    @persons.each { |person| puts "ID: #{person.id} Name: #{person.name} Age:#{person.age}" }
+    # list_all_people
+    puts 'List of all People'
+      person_data = File.open('persons.json', "r")
+      # @persons = JSON.parse(person_data)
+      person_data.each  do |person|
+        puts person[1]
+        # person = JSON.parse(person, create_additions: true)
+        # puts "[#{person.class}] ID: #{person.id} Name: #{person.name} Age: #{person.age}"
+      end 
     person_id = gets.chomp
 
     puts 'Rentals: '
-
+    rentalData = "rentals.json"
+    if File.exist?(rentalData) && File.read(rentalData) != ''
+      @rentals = JSON.parse(File.read(rentalData))
+    end
+    
     @rentals.each do |rental|
-      if rental.person.id.to_i == person_id.to_i
-        puts "Date: #{rental.date} - Book: #{rental.book.title} - Author: #{rental.book.author}"
-      end
+      rental = JSON.parse(rental, create_additions: true)
+      person = JSON.parse(person, create_additions: true)
+      # puts "#{person.class}] ID: #{person.id} Name: #{person.name} Age: #{person.age}"
+      p person.id
+      # p person_id
+      binding.pry
+      # if person.id.to_i == person_id.to_i
+      #   puts "Date: #{rental.date} - Book: #{rental.book.title} - Author: #{rental.book.author}"
+      # else puts "No rental is found"
+      # end
     end
   end
 end
