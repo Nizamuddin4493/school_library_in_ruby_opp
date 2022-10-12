@@ -4,7 +4,7 @@ require_relative 'classroom'
 class Student < Person
   attr_reader :classroom
 
-  def initialize(age, name, parent_permission: true)
+  def initialize(age, name, parent_permission)
     super(age, name)
     @classroom = classroom
     @parent_permission = parent_permission
@@ -21,6 +21,15 @@ class Student < Person
   def classroom=(classroom)
     @classroom = classroom
     classroom.students.push(self) unless classroom.students.include?(self)
+  end
+  def to_json(*args)
+    {
+      JSON.create_id  => self.class.name,
+      'a'             => [ age, name, @parent_permission ]
+    }.to_json(*args)
+  end
+  def self.json_create(object)
+    new(*object['a'])
   end
 
   private

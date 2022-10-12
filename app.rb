@@ -5,12 +5,15 @@ require_relative 'rental'
 require_relative 'create_book'
 require_relative 'create_student'
 require_relative 'create_teacher'
+require 'json'
+require 'pry'
+require 'json/add/ostruct'
 
 class App
   attr_accessor :persons, :books, :rentals, :create_book
 
   def initialize
-    @persons = []
+    @persons =  []
     @books = []
     @rentals = []
     @create_book = CreateBook.new
@@ -28,7 +31,9 @@ class App
       create_a_person
     when '4'
       book = @create_book.new_book
-      @books << book
+      json = JSON.generate(book)
+      @books << json
+      File.write('books.json', @books)
     when '5'
       create_a_rental
     when '6'
@@ -39,20 +44,31 @@ class App
   end
 
   def list_all_books
+    bookData = "books.json"
+    if File.exist?(bookData) && File.read(bookData) != ''
+      @books = JSON.parse(File.read(bookData))
+    end
     if @books.empty?
       puts 'Book list is empty'
     else
       puts 'List of all Books'
-      @books.each { |book| puts "Title: #{book.title} Author: #{book.author}" }
+      @books.each do |book| 
+        book = JSON.parse(book, create_additions: true)
+        puts "Title: #{book.title} Author: #{book.author}" 
+      end
     end
   end
 
   def list_all_people
+    @persons = JSON.parse(File.read('persons.json')) if File.exists?('persons.json')
     if @persons.empty?
       puts 'Person list is empty'
     else
-      puts 'List of all People'
-      @persons.each { |person| puts "[#{person.class}] ID: #{person.id} Name: #{person.name} Age: #{person.age}" }
+    puts 'List of all People'
+      @persons.each  do |person|
+        person = JSON.parse(person, create_additions: true)
+        puts "[#{person.class}] ID: #{person.id} Name: #{person.name} Age: #{person.age}"
+      end 
     end
   end
 
@@ -64,10 +80,14 @@ class App
     case input
     when '1'
       student = @create_student.new_student
-      @persons << student
+      json = JSON.generate(student)
+      @persons << json
+      File.write('persons.json', @persons)
     when '2'
       teacher = @create_teacher.new_teacher
-      @persons << teacher
+      json = JSON.generate(teacher)
+      @persons << json
+      File.write('persons.json', @persons)
     else
       puts 'Input not valid. Please enter a valid input (1) or (2)'
     end
