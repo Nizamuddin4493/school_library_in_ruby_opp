@@ -52,8 +52,6 @@ class App
   def list_all_books
     book_data = 'books.json'
     @books = JSON.parse(File.read(book_data)) if File.exist?(book_data) && File.read(book_data) != ''
-    #   @books = JSON.parse(File.read(book_data))
-    # end
     if @books.empty?
       puts "\nBook list is empty"
     else
@@ -132,8 +130,7 @@ class App
   def list_all_rentals
     rental_data = 'rentals.json'
     @rentals = JSON.parse(File.read(rental_data)) if File.exist?(rental_data) && File.read(rental_data) != ''
-    #   @rentals = JSON.parse(File.read(rental_data))
-    # end
+
     if @rentals.empty?
       puts "\nNo current rentals"
     else
@@ -158,16 +155,12 @@ class App
     puts 'Rentals: '
     rental_data = 'rentals.json'
     @rentals = JSON.parse(File.read(rental_data)) if File.exist?(rental_data) && File.read(rental_data) != ''
-    #   @rentals = JSON.parse(File.read(rental_data))
-    # end
 
     @rentals.each do |rental|
       rental = JSON.parse(rental, create_additions: true)
       person = JSON.parse(rental.person, create_additions: true)
       book = JSON.parse(rental.book, create_additions: true)
       puts "Date: #{rental.date} - Book: #{book.title} - Author: #{book.author}" if person.id.to_i == person_id.to_i
-      #   puts "Date: #{rental.date} - Book: #{book.title} - Author: #{book.author}"
-      # end
     end
   end
 end
