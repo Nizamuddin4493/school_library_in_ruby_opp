@@ -9,6 +9,10 @@ class Main
 
   def run
     puts 'Welcome to OPP School Library App!'
+    @app.list_all_books
+    @app.list_all_people
+    @app.list_all_rentals
+
     loop do
       main_menu
 
