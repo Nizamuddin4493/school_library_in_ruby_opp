@@ -7,7 +7,19 @@ describe Person do
   end
 
   it '#correct_name returns the name of the person object' do
-    name = Person.new(23, 'John')
-    expect(name.correct_name).to eq('John')
+    person = Person.new(23, 'John')
+    expect(person.can_use_services?).to eq(false)
+  end
+
+  it '#correct_name returns the name of the person object' do
+    person = Person.new(23, 'John')
+    expect(person.correct_name).to eq('John')
+  end
+
+  it 'adds a rentals object to the array' do
+    rental = {}
+    person = Person.new(23, 'John')
+    person.add_rental(rental)
+    expect(person.rentals.length).to eq(1)
   end
 end
