@@ -13,12 +13,12 @@ describe Student do
 
   it 'plays hooky' do
     student = Student.new(23, 'John', false)
-    expect(student.play_hooky).to eq( "¯\(ツ)/¯")
+    expect(student.play_hooky).to eq("¯\(ツ)/¯")
   end
 
   it 'sets the students classroom to the given string argument' do
     student = Student.new(23, 'John', false)
-    student.classroom = "art"
-    expect(student.classroom).to eq( "art")
+    student.classroom = 'art'
+    expect(student.classroom).to eq('art')
   end
 end

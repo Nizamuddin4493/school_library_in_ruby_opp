@@ -20,7 +20,7 @@ class Student < Person
 
   def classroom=(classroom)
     @classroom = classroom
-    classroom = Classroom.new("#{classroom}")
+    classroom = Classroom.new(classroom.to_s)
     classroom.students.push(self) unless classroom.students.include?(self)
   end
 
