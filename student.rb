@@ -15,11 +15,12 @@ class Student < Person
   end
 
   def can_use_services?
-    is_of_age? || @parent_permission
+    of_age? || @parent_permission
   end
 
   def classroom=(classroom)
     @classroom = classroom
+    classroom = Classroom.new(classroom.to_s)
     classroom.students.push(self) unless classroom.students.include?(self)
   end
 

@@ -16,8 +16,11 @@ class Person < Nameable
     @name
   end
 
+  def can_use_services?
+    false
+  end
+
   def add_rental(rental)
     @rentals.push(rental)
-    rental.book = self
   end
 end
