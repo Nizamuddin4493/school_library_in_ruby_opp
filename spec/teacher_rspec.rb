@@ -7,7 +7,7 @@ describe Teacher do
   end
 
   it 'returns true for Teacher class when invoked' do
-    name = Teacher.new(23, 'coder', "Ibrahim")
+    name = Teacher.new(23, 'coder', 'Ibrahim')
     expect(name.can_use_services?).to eq(true)
   end
 end

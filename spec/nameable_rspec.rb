@@ -8,6 +8,6 @@ describe Nameable do
 
   it '#correct_name raises a NotImplemented error when invoked' do
     nameable = Nameable.new
-    expect{nameable.correct_name}.to raise_error(NotImplementedError)
+    expect { nameable.correct_name }.to raise_error(NotImplementedError)
   end
 end
