@@ -2,7 +2,7 @@ require_relative './spec_helper'
 
 describe Book do
   it 'creates a new instance of the Book class' do
-    book = Book.new('title', 'auther')
+    book = Book.new('Wobbly wallops', 'Arthur')
     expect(book).to be_an_instance_of Book
   end
 

@@ -6,7 +6,7 @@ describe Person do
     expect(person).to be_an_instance_of Person
   end
 
-  it 'correct_name returns the name of the person object' do
+  it '#correct_name returns the name of the person object' do
     name = Person.new(23, 'John')
     expect(name.correct_name).to eq('John')
   end

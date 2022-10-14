@@ -8,7 +8,7 @@ describe Classroom do
 
   it 'adds a student object to the array' do
     student = {name: 'Hans', age: 12, parent_permission: true}
-    name = Classroom.new('cephalothorax')
+    name = Classroom.new('CS50')
     name.add_student(student)
     expect(name.students.length).to eq(1)
   end

@@ -6,7 +6,7 @@ describe Teacher do
     expect(teacher).to be_an_instance_of Teacher
   end
 
-  it 'correct_name returns the name of the person object' do
+  it 'returns true for Teacher class when invoked' do
     name = Teacher.new(23, 'coder', "Ibrahim")
     expect(name.can_use_services?).to eq(true)
   end
